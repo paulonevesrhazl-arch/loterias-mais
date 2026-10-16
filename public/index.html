@@ -1,219 +1,466 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Loterias+ | Paulo Cesar Neves</title>
-<style>
-:root{color-scheme:dark;--bg:#07110f;--panel:#101f1b;--line:#244137;--green:#37d99a;--muted:#9ab5aa}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#123328,#07110f 60%);color:#eefaf4;font:16px system-ui,Segoe UI,sans-serif;min-height:100vh}
-.wrap{max-width:1050px;margin:auto;padding:28px 18px 60px}
-.brand{display:flex;align-items:center;gap:14px}
-.logo{width:52px;height:52px;border-radius:16px;background:#174e3b;color:var(--green);display:grid;place-items:center;font-size:28px;font-weight:800}
-.brand h1{margin:0;font-size:clamp(24px,4vw,36px)}
-.brand p{margin:3px 0;color:var(--muted)}
-.hero{margin:26px 0;padding:24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,#10271f,#0c1916)}
-h2{margin:0 0 8px}
-.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-.card{border:1px solid var(--line);border-radius:18px;background:#0e1c18;padding:18px}
-.card h3{margin:0 0 10px}
-.balls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.ball{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#174e3b;border:1px solid #328763;color:#eafff4;font-weight:750}
-.btn{background:var(--green);color:#052016;border:0;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer}
-.btn.secondary{background:#1c332b;color:#eafff4;border:1px solid #35594a}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-select,input{background:#07130f;border:1px solid #35594a;color:#effff7;padding:10px;border-radius:10px;max-width:100%}
-footer{text-align:center;color:var(--muted);padding:28px 0 0;font-size:14px}
-.status{font-size:13px;color:var(--muted);margin-top:10px;overflow-wrap:anywhere}
-a{color:var(--green)}
-.tag{font-size:12px;border:1px solid #35594a;border-radius:30px;padding:5px 9px;color:#b7d8ca}
-button:disabled{opacity:.6;cursor:wait}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071b14">
+  <meta name="description" content="Loterias+: consulte resultados e gere jogos aleatórios das principais loterias brasileiras.">
+  <title>Loterias+ | Paulo Cesar Neves</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07130f;
+      --panel: #10251b;
+      --panel2: #162f23;
+      --green: #36d483;
+      --green2: #159957;
+      --text: #f0f7f2;
+      --muted: #a9beb0;
+      --border: #294838;
+      --red: #ff9b9b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: radial-gradient(ellipse at top, #153d29 0%, var(--bg) 58%);
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 34px 16px 24px;
+    }
+    .brand {
+      font-size: clamp(34px, 7vw, 52px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin: 0;
+    }
+    .brand span { color: var(--green); }
+    header p { color: var(--muted); margin: 10px 0 0; }
+    main { width: min(900px, 100% - 28px); margin: 0 auto 36px; }
+    .panel {
+      background: rgba(16, 37, 27, .96);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 32px #0002;
+    }
+    h2 { font-size: 21px; margin: 0 0 8px; }
+    .subtitle { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+    label { display: block; font-size: 14px; margin-bottom: 8px; color: #dcebe0; }
+    select, input, button {
+      font: inherit;
+      border-radius: 10px;
+    }
+    select, input {
+      width: 100%;
+      background: #091a12;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 13px;
+      outline: none;
+    }
+    select:focus, input:focus { border-color: var(--green); }
+    button {
+      border: 0;
+      padding: 13px 17px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform .15s, opacity .15s;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: .55; cursor: wait; transform: none; }
+    .primary {
+      background: linear-gradient(135deg, var(--green), #20b968);
+      color: #062114;
+    }
+    .secondary {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: end;
+    }
+    .controls .full { grid-column: 1 / -1; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button-row button { flex: 1; min-width: 150px; }
+    .status {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    .status.error { color: var(--red); }
+    .result {
+      display: none;
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .result h3 { margin: 0 0 8px; font-size: 18px; }
+    .result-meta { color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 16px 0;
+    }
+    .ball {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #36d483, #12864d);
+      color: #052416;
+      font-weight: 900;
+      font-size: 17px;
+      box-shadow: inset 0 1px 2px #ffffff55, 0 4px 10px #0003;
+    }
+    .games { display: grid; gap: 12px; margin-top: 18px; }
+    .game {
+      border: 1px solid var(--border);
+      background: #0a1c13;
+      border-radius: 12px;
+      padding: 15px;
+    }
+    .game-title { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+    .game .balls { gap: 7px; margin: 0; }
+    .game .ball { width: 38px; height: 38px; font-size: 14px; }
+    .notice {
+      border-left: 3px solid var(--green2);
+      background: #0b1c13;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      border-radius: 4px 10px 10px 4px;
+      margin-top: 16px;
+    }
+    footer {
+      text-align: center;
+      padding: 10px 16px 30px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    footer strong { color: var(--green); }
+    @media (max-width: 560px) {
+      .panel { padding: 17px; }
+      .controls { grid-template-columns: 1fr; }
+      .controls .full { grid-column: auto; }
+      .ball { width: 42px; height: 42px; font-size: 15px; }
+    }
+  </style>
 </head>
 <body>
-<main class="wrap">
-<header class="brand">
-<div class="logo">L+</div>
-<div>
-<h1>Loterias+</h1>
-<p>Análise de resultados e gerador de jogos</p>
-</div>
-</header>
+  <header>
+    <h1 class="brand">Loterias<span>+</span></h1>
+    <p>Resultados, informações e gerador de jogos aleatórios</p>
+  </header>
 
-<section class="hero">
-<span class="tag">PAINEL DE LOTERIAS</span>
-<h2 style="margin-top:14px">Acompanhe resultados e monte seus jogos</h2>
-<p class="muted">Consulte resultados, veja as dezenas sorteadas e gere combinações para organizar seus palpites. Estatísticas passadas não preveem sorteios futuros.</p>
-<div class="row">
-<select id="lottery" aria-label="Escolha a loteria">
-<option value="megasena">Mega-Sena</option>
-<option value="lotofacil">Lotofácil</option>
-<option value="quina">Quina</option>
-<option value="lotomania">Lotomania</option>
-<option value="duplasena">Dupla Sena</option>
-<option value="timemania">Timemania</option>
-<option value="diadesorte">Dia de Sorte</option>
-<option value="maismilionaria">+Milionária</option>
-<option value="supersete">Super Sete</option>
-</select>
-<button class="btn" id="load">Consultar resultado mais recente</button>
-</div>
-<div id="status" class="status" role="status" aria-live="polite">Selecione uma loteria e consulte o resultado.</div>
-<div id="result"></div>
-</section>
+  <main>
+    <section class="panel">
+      <h2>Consultar resultados</h2>
+      <p class="subtitle">Consulte o concurso mais recente disponível para a loteria escolhida.</p>
 
-<div class="grid">
-<section class="card">
-<h3>Gerador de jogos</h3>
-<p class="muted">Gere combinações aleatórias para a loteria selecionada.</p>
-<div class="row">
-<label for="count">Quantidade</label>
-<select id="count">
-<option value="1">1 jogo</option>
-<option value="3">3 jogos</option>
-<option value="5">5 jogos</option>
-<option value="10">10 jogos</option>
-</select>
-<button class="btn" id="generate">Gerar jogos</button>
-</div>
-<div id="games"></div>
-</section>
-<section class="card">
-<h3>Sobre os resultados</h3>
-<p class="muted">A consulta utiliza uma API alternativa independente. Os resultados podem ficar indisponíveis caso o serviço bloqueie o acesso ou esteja fora do ar.</p>
-<p class="muted">Confira os dados oficiais antes de tomar qualquer decisão. Nenhuma combinação tem garantia de prêmio.</p>
-</section>
-</div>
+      <div class="controls">
+        <div class="full">
+          <label for="lottery">Escolha a loteria</label>
+          <select id="lottery">
+            <option value="megasena">Mega-Sena</option>
+            <option value="lotofacil">Lotofácil</option>
+            <option value="quina">Quina</option>
+            <option value="lotomania">Lotomania</option>
+            <option value="duplasena">Dupla Sena</option>
+            <option value="timemania">Timemania</option>
+            <option value="diadesorte">Dia de Sorte</option>
+            <option value="maismilionaria">+Milionária</option>
+            <option value="supersete">Super Sete</option>
+          </select>
+        </div>
+        <div class="full">
+          <button class="primary" id="consultBtn" style="width:100%">
+            Consultar resultado mais recente
+          </button>
+        </div>
+      </div>
 
-<footer>Desenvolvido por <strong>Paulo Cesar Neves</strong> · Projeto independente, não oficial da Caixa Econômica Federal.</footer>
-</main>
+      <div id="resultStatus" class="status" role="status" aria-live="polite"></div>
 
-<script>
-'use strict';
+      <div id="result" class="result">
+        <h3 id="resultTitle">Resultado</h3>
+        <div id="resultMeta" class="result-meta"></div>
+        <div id="resultBalls" class="balls"></div>
+        <div id="prizes"></div>
+      </div>
 
-const configs = {
-  megasena: {name:'Mega-Sena', n:6, max:60},
-  lotofacil: {name:'Lotofácil', n:15, max:25},
-  quina: {name:'Quina', n:5, max:80},
-  lotomania: {name:'Lotomania', n:50, max:100},
-  duplasena: {name:'Dupla Sena', n:6, max:50},
-  timemania: {name:'Timemania', n:10, max:80},
-  diadesorte: {name:'Dia de Sorte', n:7, max:31},
-  maismilionaria: {name:'+Milionária', n:6, max:50},
-  supersete: {name:'Super Sete', n:7, max:10}
-};
+      <div class="notice">
+        Os resultados dependem da disponibilidade dos serviços consultados.
+        Confira sempre as informações oficiais da Caixa antes de tomar qualquer decisão.
+      </div>
+    </section>
 
-const $ = id => document.getElementById(id);
+    <section class="panel">
+      <h2>Gerador de jogos</h2>
+      <p class="subtitle">Gere combinações aleatórias para a loteria selecionada. Os jogos são sugestões e não garantem prêmios.</p>
 
-function balls(nums) {
-  return '<div class="balls">' + nums.map(n =>
-    '<span class="ball">' +
-    String(n).padStart(2,'0') +
-    '</span>'
-  ).join('') + '</div>';
-}
+      <div class="controls">
+        <div>
+          <label for="quantity">Quantidade de jogos</label>
+          <select id="quantity">
+            <option value="1">1 jogo</option>
+            <option value="3">3 jogos</option>
+            <option value="5" selected>5 jogos</option>
+            <option value="10">10 jogos</option>
+          </select>
+        </div>
+        <div>
+          <label for="customCount">Dezenas por jogo</label>
+          <input id="customCount" type="text" readonly value="6 dezenas">
+        </div>
+        <div class="full button-row">
+          <button class="primary" id="generateBtn">Gerar jogos</button>
+          <button class="secondary" id="clearBtn">Limpar jogos</button>
+        </div>
+      </div>
 
-function extract(data) {
-  return data.listaDezenas ||
-    data.dezenasSorteadasOrdemSorteio ||
-    data.dezenasSorteadas ||
-    data.dezenas ||
-    [];
-}
+      <div id="games" class="games"></div>
 
-function money(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number) || number <= 0) return 'não informado';
-  return number.toLocaleString('pt-BR',{
-    style:'currency',
-    currency:'BRL'
-  });
-}
+      <div class="notice">
+        As combinações são geradas aleatoriamente. Resultados anteriores e estatísticas
+        não permitem prever os próximos sorteios.
+      </div>
+    </section>
+  </main>
 
-$('load').addEventListener('click', async () => {
-  const code = $('lottery').value;
-  const button = $('load');
+  <footer>
+    <div><strong>Loterias+</strong></div>
+    <div>Desenvolvido por Paulo Cesar Neves</div>
+    <div>Projeto independente, sem vínculo oficial com a Caixa Econômica Federal.</div>
+  </footer>
 
-  button.disabled = true;
-  $('status').textContent = 'Consultando a fonte alternativa...';
-  $('result').innerHTML = '';
+  <script>
+    const LOTTERIES = {
+      megasena: {
+        name: "Mega-Sena", min: 1, max: 60, count: 6, digits: 2
+      },
+      lotofacil: {
+        name: "Lotofácil", min: 1, max: 25, count: 15, digits: 2
+      },
+      quina: {
+        name: "Quina", min: 1, max: 80, count: 5, digits: 2
+      },
+      lotomania: {
+        name: "Lotomania", min: 0, max: 99, count: 50, digits: 2
+      },
+      duplasena: {
+        name: "Dupla Sena", min: 1, max: 50, count: 6, digits: 2
+      },
+      timemania: {
+        name: "Timemania", min: 1, max: 80, count: 10, digits: 2
+      },
+      diadesorte: {
+        name: "Dia de Sorte", min: 1, max: 31, count: 7, digits: 2
+      },
+      maismilionaria: {
+        name: "+Milionária", min: 1, max: 50, count: 6, digits: 2
+      },
+      supersete: {
+        name: "Super Sete", min: 0, max: 9, count: 7, digits: 1
+      }
+    };
 
-  try {
-    const url = 'https://api.guidi.dev.br/loteria/' +
-      encodeURIComponent(code) + '/ultimo';
+    const $ = (id) => document.getElementById(id);
 
-    const response = await fetch(url, {
-      method:'GET',
-      headers:{'Accept':'application/json'}
+    function selectedLottery() {
+      return LOTTERIES[$("lottery").value];
+    }
+
+    function formatNumber(n, digits) {
+      return String(n).padStart(digits || 2, "0");
+    }
+
+    function makeBalls(numbers, digits) {
+      const wrap = document.createElement("div");
+      wrap.className = "balls";
+
+      numbers.forEach((n) => {
+        const ball = document.createElement("span");
+        ball.className = "ball";
+        ball.textContent = formatNumber(n, digits);
+        wrap.appendChild(ball);
+      });
+
+      return wrap;
+    }
+
+    function randomNumbers(config) {
+      const pool = [];
+      for (let n = config.min; n <= config.max; n++) pool.push(n);
+
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      return pool.slice(0, config.count).sort((a, b) => a - b);
+    }
+
+    function updateGameSettings() {
+      const config = selectedLottery();
+      $("customCount").value = config.count +
+        (config.count === 1 ? " dezena" : " dezenas");
+    }
+
+    async function consultResult() {
+      const code = $("lottery").value;
+      const config = selectedLottery();
+      const button = $("consultBtn");
+      const status = $("resultStatus");
+      const resultBox = $("result");
+
+      button.disabled = true;
+      button.textContent = "Consultando...";
+      status.className = "status";
+      status.textContent = "Buscando o resultado mais recente...";
+      resultBox.style.display = "none";
+
+      try {
+        // Usa a função do próprio Netlify, evitando a consulta direta pelo navegador.
+        const url = "/.netlify/functions/loterias?loteria=" +
+          encodeURIComponent(code);
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+
+        const raw = await response.text();
+        let payload;
+
+        try {
+          payload = JSON.parse(raw);
+        } catch {
+          throw new Error(
+            "O servidor não retornou JSON. Confira a publicação do site no Netlify."
+          );
+        }
+
+        if (!response.ok) {
+          const details = Array.isArray(payload.details)
+            ? " " + payload.details.join(" · ")
+            : "";
+          throw new Error(
+            (payload.error || "Não foi possível consultar o resultado.") + details
+          );
+        }
+
+        const data = payload.data || payload;
+        const contest = data.concurso ?? data.numero ?? data.numeroConcurso;
+        const rawNumbers = data.listaDezenas ||
+          data.dezenas ||
+          data.dezenasSorteadasOrdemSorteio;
+
+        if (!Array.isArray(rawNumbers) || rawNumbers.length === 0) {
+          throw new Error("A resposta não contém as dezenas do sorteio.");
+        }
+
+        $("resultTitle").textContent =
+          config.name + (contest ? " — Concurso " + contest : "");
+
+        const date = data.dataApuracao || data.data || "";
+        const source = payload.source ? "Fonte: " + payload.source : "";
+        const nextDate = data.dataProximoConcurso
+          ? "Próximo concurso: " + data.dataProximoConcurso
+          : "";
+
+        $("resultMeta").textContent =
+          [date ? "Data do sorteio: " + date : "", source, nextDate]
+            .filter(Boolean).join(" · ");
+
+        const numbers = rawNumbers.map((n) => Number(n))
+          .filter((n) => Number.isFinite(n));
+
+        $("resultBalls").replaceChildren(makeBalls(numbers, config.digits));
+        $("prizes").replaceChildren();
+
+        if (Array.isArray(data.premiacoes) && data.premiacoes.length) {
+          const heading = document.createElement("h3");
+          heading.textContent = "Premiação";
+          heading.style.marginTop = "20px";
+          $("prizes").appendChild(heading);
+
+          data.premiacoes.forEach((prize) => {
+            const line = document.createElement("p");
+            line.className = "result-meta";
+            const description = prize.descricao || prize.faixa || "Faixa";
+            const winners = prize.ganhadores ?? 0;
+            const amount = Number(prize.valorPremio);
+            const money = Number.isFinite(amount)
+              ? amount.toLocaleString("pt-BR", {
+                  style: "currency", currency: "BRL"
+                })
+              : "Não informado";
+
+            line.textContent = description + ": " + winners +
+              " ganhador(es) · " + money;
+            $("prizes").appendChild(line);
+          });
+        }
+
+        resultBox.style.display = "block";
+        status.textContent = "Resultado carregado. Confira os dados oficiais da Caixa.";
+      } catch (error) {
+        status.className = "status error";
+        status.textContent = "Não foi possível consultar: " +
+          (error.message || "erro inesperado") +
+          " Você pode tentar novamente mais tarde.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Consultar resultado mais recente";
+      }
+    }
+
+    function generateGames() {
+      const config = selectedLottery();
+      const quantity = Number($("quantity").value) || 5;
+      const container = $("games");
+      container.replaceChildren();
+
+      for (let i = 0; i < quantity; i++) {
+        const card = document.createElement("div");
+        card.className = "game";
+
+        const title = document.createElement("div");
+        title.className = "game-title";
+        title.textContent = "Jogo " + (i + 1);
+
+        card.appendChild(title);
+        card.appendChild(makeBalls(randomNumbers(config), config.digits));
+        container.appendChild(card);
+      }
+    }
+
+    $("consultBtn").addEventListener("click", consultResult);
+    $("generateBtn").addEventListener("click", generateGames);
+    $("clearBtn").addEventListener("click", () => {
+      $("games").replaceChildren();
     });
+    $("lottery").addEventListener("change", updateGameSettings);
 
-    if (!response.ok) {
-      throw new Error('A API respondeu com HTTP ' + response.status + '.');
-    }
-
-    const data = await response.json();
-    const result = data.data || data;
-    const numbers = extract(result);
-
-    if (!Array.isArray(numbers) || numbers.length === 0) {
-      throw new Error('A resposta não contém dezenas reconhecidas.');
-    }
-
-    const contest = result.numero || result.numeroConcurso || '—';
-    const date = result.dataApuracao || result.data || '—';
-
-    $('status').textContent =
-      'Concurso ' + contest + ' · Data: ' + date +
-      ' · Fonte: API alternativa Guidi';
-
-    $('result').innerHTML = balls(numbers) +
-      '<p class="muted">Prêmio estimado para o próximo concurso: ' +
-      money(result.valorEstimadoProximoConcurso) + '</p>' +
-      '<p class="muted">Confira o resultado também nos canais oficiais.</p>';
-
-  } catch (error) {
-    $('status').textContent =
-      'Não foi possível consultar o resultado: ' +
-      (error.message || 'erro inesperado');
-
-    $('result').innerHTML =
-      '<p class="muted">Isso pode acontecer se a API estiver indisponível ' +
-      'ou bloquear a consulta pelo navegador (CORS). O gerador de jogos ' +
-      'continua funcionando normalmente.</p>';
-  } finally {
-    button.disabled = false;
-  }
-});
-
-$('generate').addEventListener('click', () => {
-  const config = configs[$('lottery').value];
-  const count = Number($('count').value);
-  let output = '';
-
-  for (let k = 0; k < count; k++) {
-    const available = Array.from(
-      {length:config.max},
-      (_,i) => i + 1
-    );
-
-    for (let i = available.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [available[i], available[j]] = [available[j], available[i]];
-    }
-
-    const numbers = available
-      .slice(0,config.n)
-      .sort((a,b) => a-b);
-
-    output += '<div style="margin-top:14px"><strong>Jogo ' +
-      (k+1) + '</strong>' + balls(numbers) + '</div>';
-  }
-
-  $('games').innerHTML = output;
-});
-</script>
+    updateGameSettings();
+    generateGames();
+  </script>
 </body>
 </html>
