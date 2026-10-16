@@ -1,0 +1,9 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/loterias/*"
+  to = "/.netlify/functions/loterias?loteria=:splat"
+  status = 200
+  force = true
